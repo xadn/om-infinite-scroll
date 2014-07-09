@@ -1,5 +1,12 @@
-(ns om-infinite-scroll.core)
+(ns om-infinite-scroll.core
+  (:require [om.core :as om :include-macros true]
+            [om.dom :as dom :include-macros true]))
 
-(enable-console-print!)
+(defn widget [data owner]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/h1 nil (:text data)))))
 
-(println "Hello world!")
+(om/root widget {:text "Hello world!"}
+  {:target (. js/document (getElementById "my-app"))})
