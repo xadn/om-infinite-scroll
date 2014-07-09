@@ -1,12 +1,19 @@
 (ns om-infinite-scroll.core
   (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
+            [sablono.core :as html :refer-macros [html]]
+            [clojure.test.check.generators :as gen]
+            ))
 
-(defn widget [data owner]
-  (reify
-    om/IRender
-    (render [this]
-      (dom/h1 nil (:text data)))))
+(enable-console-print!)
 
-(om/root widget {:text "Hello world!"}
-  {:target (. js/document (getElementById "my-app"))})
+(println "hello")
+
+(defn widget [data]
+  (om/component
+   (html [:div {:className "is-panel"}
+          [:ol {:className "is-content"} (for [n (range 1 1000)]
+                 [:li {:className "is-item"}
+                   [:div "Banh mi selfies shabby chic disrupt polaroid roof party. Portland High Life brunch sustainable, plaid Kickstarter pickled four loko 3 wolf moon whatever."]
+                 ])]])))
+
+(om/root widget {} {:target js/document.body})
